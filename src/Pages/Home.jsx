@@ -2,6 +2,7 @@ import { Container, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import PaperComponent from "../Components/PaperComponent";
 import "../sass/home.scss";
+// import aukpic from "../image/auk.jpg";
 
 const Home = () => {
   return (
@@ -17,14 +18,16 @@ const Home = () => {
       }}>
       <div className="header"></div>
       <div className="welcome">
-        <Typography variant="heading" fontSize={50} component="h2">
-          Welcome to Nacos
-        </Typography>
-        <Typography variant="p" fontSize={30} component="h5">
-          E-Voting website
-        </Typography>
-        <p className="totalVoted">1304</p>
-        <p className="totalExpected">3000</p>
+        <div className="backgroundimage">
+          <Typography variant="h1" color="white" fontSize={70} component="h1">
+            Welcome to Nacos
+          </Typography>
+          <Typography variant="p" fontSize={30} component="h5">
+            E-Voting website
+          </Typography>
+          <p className="totalVoted">1304</p>
+          <p className="totalExpected">3000</p>
+        </div>
       </div>
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Presidents
