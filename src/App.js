@@ -1,11 +1,13 @@
 import './App.scss';
-import VoterLogin from './Pages/VoterLogin';
+import Home from './Pages/Home';
+// import VoterLogin from './Pages/VoterLogin';
 
 function App() {
   return (
     <div className="App">
       {/* <Dashboard /> */}
-      <VoterLogin />
+      {/* <VoterLogin /> */}
+      <Home />
     </div>
   );
 }
