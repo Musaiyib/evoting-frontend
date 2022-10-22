@@ -1,18 +1,6 @@
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Container,
-  Divider,
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Container, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
-import logo from "../image/nacos.png";
+import PaperComponent from "../Components/PaperComponent";
 
 const VotingPage = () => {
   return (
@@ -26,10 +14,10 @@ const VotingPage = () => {
         flexDirection: "column",
       }}>
       <div className="header">
-        <Typography variant="heading" component="h2">
+        <Typography variant="heading" fontSize={50} component="h2">
           Welcome to Nacos
         </Typography>
-        <Typography variant="p" component="h5">
+        <Typography variant="p" fontSize={30} component="h5">
           E-Voting website
         </Typography>
       </div>
@@ -50,132 +38,9 @@ const VotingPage = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <Paper
-          elevation={7}
-          sx={{
-            maxWidth: 200,
-            borderRadius: 3,
-          }}>
-          <Grid>
-            <Card
-              sx={{
-                maxWidth: 200,
-                borderRadius: 3,
-              }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={logo}
-                  sx={{
-                    objectFit: "contain",
-                    borderBottomRightRadius: 20,
-                    borderBottomLeftRadius: 20,
-                    boxShadow: 2,
-                    paddingY: 1,
-                  }}
-                  alt="candidate picture"
-                />
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    component="div">
-                    Musaiyib Yakubu Usman
-                  </Typography>
-                  <Typography variant="h5" fontSize={12} component="div">
-                    (Supplier)
-                  </Typography>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    mt={2}
-                    component="p">
-                    Votes: 204
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}>
-                <Button
-                  sx={{ textAlign: "center" }}
-                  size="small"
-                  color="primary">
-                  <Typography>Vote</Typography>
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Paper>
-        <Paper
-          elevation={7}
-          sx={{
-            maxWidth: 200,
-            borderRadius: 3,
-          }}>
-          <Grid>
-            <Card
-              sx={{
-                maxWidth: 200,
-                borderRadius: 3,
-              }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={logo}
-                  sx={{
-                    objectFit: "contain",
-                    borderBottomRightRadius: 20,
-                    borderBottomLeftRadius: 20,
-                    boxShadow: 2,
-                    paddingY: 1,
-                  }}
-                  alt="candidate picture"
-                />
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    component="div">
-                    Musaiyib Yakubu Usman
-                  </Typography>
-                  <Typography variant="h5" fontSize={12} component="div">
-                    (Supplier)
-                  </Typography>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    mt={2}
-                    component="p">
-                    Votes: 204
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}>
-                <Button
-                  sx={{ textAlign: "center" }}
-                  size="small"
-                  color="primary">
-                  <Typography>Vote</Typography>
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Paper>
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
       </Grid>
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Vice Presidents I
@@ -190,69 +55,9 @@ const VotingPage = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <Paper
-          elevation={7}
-          sx={{
-            maxWidth: 200,
-            borderRadius: 3,
-          }}>
-          <Grid>
-            <Card
-              sx={{
-                maxWidth: 200,
-                borderRadius: 3,
-              }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={logo}
-                  sx={{
-                    objectFit: "contain",
-                    borderBottomRightRadius: 20,
-                    borderBottomLeftRadius: 20,
-                    boxShadow: 2,
-                    paddingY: 1,
-                  }}
-                  alt="candidate picture"
-                />
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    component="div">
-                    Musaiyib Yakubu Usman
-                  </Typography>
-                  <Typography variant="h5" fontSize={12} component="div">
-                    (Supplier)
-                  </Typography>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    mt={2}
-                    component="p">
-                    Votes: 204
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}>
-                <Button
-                  sx={{ textAlign: "center" }}
-                  size="small"
-                  color="primary">
-                  <Typography>Vote</Typography>
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Paper>
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
       </Grid>
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Vice Presidents II
@@ -267,69 +72,9 @@ const VotingPage = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <Paper
-          elevation={7}
-          sx={{
-            maxWidth: 200,
-            borderRadius: 3,
-          }}>
-          <Grid>
-            <Card
-              sx={{
-                maxWidth: 200,
-                borderRadius: 3,
-              }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={logo}
-                  sx={{
-                    objectFit: "contain",
-                    borderBottomRightRadius: 20,
-                    borderBottomLeftRadius: 20,
-                    boxShadow: 2,
-                    paddingY: 1,
-                  }}
-                  alt="candidate picture"
-                />
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    component="div">
-                    Musaiyib Yakubu Usman
-                  </Typography>
-                  <Typography variant="h5" fontSize={12} component="div">
-                    (Supplier)
-                  </Typography>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    mt={2}
-                    component="p">
-                    Votes: 204
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}>
-                <Button
-                  sx={{ textAlign: "center" }}
-                  size="small"
-                  color="primary">
-                  <Typography>Vote</Typography>
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Paper>
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
       </Grid>
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Secretary Generals
@@ -344,69 +89,9 @@ const VotingPage = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <Paper
-          elevation={7}
-          sx={{
-            maxWidth: 200,
-            borderRadius: 3,
-          }}>
-          <Grid>
-            <Card
-              sx={{
-                maxWidth: 200,
-                borderRadius: 3,
-              }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={logo}
-                  sx={{
-                    objectFit: "contain",
-                    borderBottomRightRadius: 20,
-                    borderBottomLeftRadius: 20,
-                    boxShadow: 2,
-                    paddingY: 1,
-                  }}
-                  alt="candidate picture"
-                />
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    component="div">
-                    Musaiyib Yakubu Usman
-                  </Typography>
-                  <Typography variant="h5" fontSize={12} component="div">
-                    (Supplier)
-                  </Typography>
-                  <Typography
-                    fontSize={14}
-                    fontWeight="bold"
-                    variant="h2"
-                    mt={2}
-                    component="p">
-                    Votes: 204
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}>
-                <Button
-                  sx={{ textAlign: "center" }}
-                  size="small"
-                  color="primary">
-                  <Typography>Vote</Typography>
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Paper>
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
       </Grid>
     </Container>
   );

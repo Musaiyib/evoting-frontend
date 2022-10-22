@@ -1,4 +1,5 @@
 import './App.scss';
+// import VotingPage from './Pages/VotingPage';
 import Home from './Pages/Home';
 // import VoterLogin from './Pages/VoterLogin';
 
@@ -8,6 +9,7 @@ function App() {
       {/* <Dashboard /> */}
       {/* <VoterLogin /> */}
       <Home />
+      {/* <VotingPage /> */}
     </div>
   );
 }
