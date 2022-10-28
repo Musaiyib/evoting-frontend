@@ -5,27 +5,37 @@
   .welcome {
     height: 100vh;
     width: 100%;
-    // background-color: rgb(24, 197, 38);
     background-image: url("../image/auk.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
 
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    // background-color: rgba(0, 128, 0, 0.544);
+    height: 100vh;
+    width: 100%;
+
+    .overlay {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        rgba(30, 160, 30, 0.544),
+        rgba(30, 160, 30, 0.544)
+      );
+      opacity: 0.7;
+      position: absolute;
+      z-index: 1;
+    }
     h1,
     p,
     h5 {
       color: rgb(255, 255, 255);
+      z-index: 2;
     }
-
-    .backgroundimage {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      position: absolute;
-      background-color: rgba(0, 128, 0, 0.544);
-      height: 100vh;
-      width: 100%;
+    h1 {
+      font-weight: 700;
     }
   }
 }

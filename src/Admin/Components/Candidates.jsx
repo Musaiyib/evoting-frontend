@@ -1,13 +1,12 @@
 import { Container, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
+import "../../sass/votingpage.scss";
 import PaperComponent from "../Components/PaperComponent";
-import "../sass/home.scss";
-// import aukpic from "../image/auk.jpg";
 
-const Home = () => {
+const Candidates = () => {
   return (
     <Container
-      className="home"
+      className="votingpage"
       maxWidth={false}
       disableGutters
       sx={{
@@ -18,15 +17,10 @@ const Home = () => {
       }}>
       <div className="header"></div>
       <div className="welcome">
-        <Typography variant="h1" color="white" fontSize={70} component="h1">
-          Welcome to Nacos
+        <Typography variant="p" fontSize={16} component="h5" sx={{ px: 2 }}>
+          <b>NOTE: </b>Make sure you enhance FREE AND FAIR election for the
+          benefits of the ASSOTIATION
         </Typography>
-        <Typography variant="p" fontSize={30} component="h5">
-          E-Voting website
-        </Typography>
-        <p className="totalVoted">1304</p>
-        <p className="totalExpected">3000</p>
-        <div className="overlay"></div>
       </div>
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Presidents
@@ -41,9 +35,9 @@ const Home = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
       </Grid>
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Vice Presidents I
@@ -58,9 +52,9 @@ const Home = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
       </Grid>
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Vice Presidents II
@@ -75,9 +69,9 @@ const Home = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
       </Grid>
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Secretary Generals
@@ -92,12 +86,12 @@ const Home = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
+        <PaperComponent voteBtn={true} />
       </Grid>
     </Container>
   );
 };
 
-export default Home;
+export default Candidates;
