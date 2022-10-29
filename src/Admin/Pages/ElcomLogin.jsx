@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import FormInput from "../Components/FormInput";
-import "../sass/voterlogin.scss";
+import FormInput from "../../Components/FormInput";
+import "../../sass/voterlogin.scss";
 
-const VoterLogin = () => {
+const ElcomLogin = () => {
   const [values, setValues] = useState({
     regNo: "",
     token: "",
@@ -11,24 +11,23 @@ const VoterLogin = () => {
   const inputs = [
     {
       id: 1,
-      name: "regNo",
+      name: "email",
       type: "text",
-      placeholder: "Registration Number",
-      errorMessage:
-        "Username should be 3-16 characters and shouldn't include any special character!",
-      label: "Registration Number",
-      pattern: "^[A-Za-z0-9]{3,16}$",
+      placeholder: "Email",
+      errorMessage: "Invalid email",
+      label: "Email",
+      pattern:
+        "^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$",
       required: true,
     },
     {
       id: 2,
-      name: "token",
-      type: "text",
-      placeholder: "Enter your token",
-      errorMessage:
-        "Username should be 3-16 characters and shouldn't include any special character!",
-      label: "Token",
-      pattern: "^[A-Za-z0-9]{10}$",
+      name: "password",
+      type: "password",
+      placeholder: "Enter your password",
+      errorMessage: "Password must be 8 character long",
+      label: "Password",
+      pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,}$",
       required: true,
     },
   ];
@@ -44,7 +43,7 @@ const VoterLogin = () => {
   return (
     <div className="voter">
       <form onSubmit={handleSubmit}>
-        <h1>Voter Login</h1>
+        <h1>Elcom Login</h1>
         {inputs.map((input) => (
           <FormInput
             key={input.id}
@@ -53,10 +52,10 @@ const VoterLogin = () => {
             onChange={onChange}
           />
         ))}
-        <button>Validate</button>
+        <button>Login</button>
       </form>
     </div>
   );
 };
 
-export default VoterLogin;
+export default ElcomLogin;
