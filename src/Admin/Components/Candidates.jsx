@@ -29,7 +29,11 @@ const Candidates = () => {
       }}>
       <div className="header"></div>
       <div className="welcome">
-        <Typography variant="p" fontSize={16} component="h5" sx={{ px: 2 }}>
+        <Typography
+          variant="p"
+          fontSize={16}
+          component="h5"
+          sx={{ px: 2, objectFit: "contain" }}>
           <b>NOTE: </b>Make sure you enhance FREE AND FAIR election for the
           benefits of the ASSOTIATION
         </Typography>
