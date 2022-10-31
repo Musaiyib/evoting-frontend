@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import FormInput from "../../Components/FormInput";
 import "../../sass/voterlogin.scss";
+import { loginUser } from "../../Slices/authSlice";
 
 const ElcomLogin = () => {
+  const { isLoading } = useSelector((state) => state.auth);
   const [values, setValues] = useState({
-    regNo: "",
-    token: "",
+    email: "",
+    password: "",
   });
+  const dispatch = useDispatch();
 
   const inputs = [
     {
@@ -14,10 +18,7 @@ const ElcomLogin = () => {
       name: "email",
       type: "text",
       placeholder: "Email",
-      errorMessage: "Invalid email",
       label: "Email",
-      pattern:
-        "^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$",
       required: true,
     },
     {
@@ -25,15 +26,14 @@ const ElcomLogin = () => {
       name: "password",
       type: "password",
       placeholder: "Enter your password",
-      errorMessage: "Password must be 8 character long",
       label: "Password",
-      pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,}$",
       required: true,
     },
   ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(loginUser(values));
   };
 
   const onChange = (e) => {
@@ -52,7 +52,9 @@ const ElcomLogin = () => {
             onChange={onChange}
           />
         ))}
-        <button>Login</button>
+        <button onClick={() => handleSubmit}>
+          {isLoading ? "loading..." : "Login"}
+        </button>
       </form>
     </div>
   );

@@ -9,15 +9,20 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createCandidate } from "../../Slices/candidateSlice";
 
 const AddCandidates = () => {
   const [name, setName] = useState();
   const [regNo, setRegNo] = useState();
+  const [phone, setPhone] = useState();
   const [level, setLevel] = useState();
   const [nickName, setNickName] = useState();
   const [image, setImage] = useState();
   const [position, setPosition] = useState();
   const [error, setError] = useState();
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     setError(null);
@@ -30,7 +35,7 @@ const AddCandidates = () => {
       setError("Registration number field is required");
       return false;
     }
-    if (level === undefined || level === "" || level === null) {
+    if (level === undefined || level === null) {
       setError("level field is required");
       return false;
     }
@@ -42,12 +47,25 @@ const AddCandidates = () => {
       setError("You need to upload an image");
       return false;
     }
+    if (phone === undefined || phone === "" || phone === null) {
+      setError("Phone field is required");
+      return false;
+    }
     if (position === undefined || position === "" || position === null) {
       setError("Position field is required");
       return false;
     }
-
-    console.log(name, level, position, regNo, nickName, image);
+    const parsedLevel = JSON.parse(level);
+    dispatch(
+      createCandidate({
+        name,
+        level: parsedLevel,
+        phone,
+        position,
+        regNo,
+        nickName,
+      })
+    );
   };
   return (
     <Container
@@ -89,9 +107,18 @@ const AddCandidates = () => {
         </FormGroup>
         <FormGroup>
           <TextField
+            onChange={(e) => setPhone(e.target.value)}
+            sx={{ my: 1 }}
+            label="Candidate Phone Number"
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <TextField
             onChange={(e) => setLevel(e.target.value)}
             sx={{ my: 1 }}
             label="Candidate Level"
+            type="number"
             required
           />
         </FormGroup>

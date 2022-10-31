@@ -1,9 +1,21 @@
 import { Container, Divider, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../../sass/votingpage.scss";
+import { getCandidates } from "../../Slices/candidateSlice";
 import PaperComponent from "../Components/PaperComponent";
 
 const Candidates = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCandidates());
+  }, []);
+
+  const { candidates } = useSelector((state) => state.candidates);
+
+  console.log(candidates);
+
   return (
     <Container
       className="votingpage"
@@ -35,11 +47,15 @@ const Candidates = () => {
           alignItems: "center",
           gap: 4,
         }}>
-        <PaperComponent voteBtn={true} />
-        <PaperComponent voteBtn={true} />
-        <PaperComponent voteBtn={true} />
+        {candidates.map((candidate) => (
+          <PaperComponent
+            key={candidate._id}
+            candidate={candidate}
+            voteBtn={true}
+          />
+        ))}
       </Grid>
-      <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
+      {/* <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Vice Presidents I
       </Divider>
       <Grid
@@ -55,8 +71,8 @@ const Candidates = () => {
         <PaperComponent voteBtn={true} />
         <PaperComponent voteBtn={true} />
         <PaperComponent voteBtn={true} />
-      </Grid>
-      <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
+      </Grid> */}
+      {/* <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Vice Presidents II
       </Divider>
       <Grid
@@ -89,7 +105,7 @@ const Candidates = () => {
         <PaperComponent voteBtn={true} />
         <PaperComponent voteBtn={true} />
         <PaperComponent voteBtn={true} />
-      </Grid>
+      </Grid> */}
     </Container>
   );
 };
