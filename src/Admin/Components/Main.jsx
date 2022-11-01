@@ -1,31 +1,12 @@
 import { Group, MapsHomeWork } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, List, Paper, Typography } from "@mui/material";
 import React, { useEffect } from "react";
-// import { getRooms } from "../../../actions/room";
-// import { getUsers } from "../../../actions/user";
-import moment from "moment";
 
 const Main = ({ setSelectedLink, link }) => {
-  //   const {
-  //     state: { rooms, users },
-  //     dispatch,
-  //   } = useValue();
   const users = {};
   const rooms = {};
   useEffect(() => {
     setSelectedLink(link);
-    // if (rooms.length === 0) getRooms(dispatch);
-    // if (users.length === 0) getUsers(dispatch);
   }, []);
   return (
     <Box

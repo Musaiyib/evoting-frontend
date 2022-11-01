@@ -51,6 +51,7 @@ const PaperComponent = ({ voteBtn }) => {
                 fontWeight="bold"
                 variant="h2"
                 color="green"
+                textTransform="capitalize"
                 component="div">
                 Musaiyib Yakubu Usman
               </Typography>
@@ -58,6 +59,7 @@ const PaperComponent = ({ voteBtn }) => {
                 variant="h5"
                 fontWeight="bold"
                 fontSize={12}
+                textTransform="capitalize"
                 component="div">
                 (Supplier)
               </Typography>
@@ -67,6 +69,7 @@ const PaperComponent = ({ voteBtn }) => {
                 fontWeight="bolder"
                 variant="h2"
                 mt={2}
+                textTransform="capitalize"
                 component="p">
                 Votes: 204
               </Typography>

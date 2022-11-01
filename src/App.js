@@ -9,6 +9,7 @@ import React from 'react';
 import ContextApi from './ContextApi';
 import ProtectedRoutes from './Admin/Components/ProtectedRoutes';
 import ProtectVoting from './Components/ProtectVoting'
+import ElcomSignup from './Admin/Pages/Signup';
 
 const user = true
 
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/elcom">
               {/* elecom login */}
               <Route path='' element={<ElcomLogin />} />
+              <Route path='register' element={<ElcomSignup />} />
               {/* admin routes */}
               <Route element={<ProtectedRoutes user={user} />}>
                 <Route path='dashboard/*' element={<Dashboard />} />
