@@ -1,13 +1,21 @@
-import { Container, Divider, Grid, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { Button, Container, Divider, Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../../sass/votingpage.scss";
 import { getCandidates } from "../../Slices/candidateSlice";
 import PaperComponent from "../Components/PaperComponent";
+import EditModal from "./EditModal";
 
 const Candidates = () => {
-  const dispatch = useDispatch();
+  const [openModal, setOpenModal] = useState(false);
+  const [person, setPerson] = useState();
 
+  const handleModal = (candidate) => {
+    setOpenModal(!openModal);
+    setPerson(candidate);
+  };
+
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCandidates());
   }, []);
@@ -34,6 +42,9 @@ const Candidates = () => {
           benefits of the ASSOTIATION
         </Typography>
       </div>
+      {openModal && (
+        <EditModal open={openModal} close={handleModal} candidate={person} />
+      )}
       <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
         Presidents
       </Divider>
@@ -52,6 +63,8 @@ const Candidates = () => {
             key={candidate._id}
             candidate={candidate}
             voteBtn={true}
+            openModal={() => handleModal(candidate)}
+            closeModal={handleModal}
           />
         ))}
       </Grid>

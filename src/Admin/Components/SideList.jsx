@@ -16,9 +16,12 @@ import {
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { reset } from "../../Slices/authSlice";
 import AddCandidates from "./AddCandidates";
 import Candidates from "./Candidates";
+import GenerateToken from "./GenerateToken";
 import Main from "./Main";
 const drawerWidth = 240;
 
@@ -70,12 +73,10 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SideList = ({ open, setOpen }) => {
-  //   const {
-  //     state: { currentUser },
-  //     dispatch,
-  //   } = useValue();
-  const currentUser = {};
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
   const [selectedLink, setSelectedLink] = useState("");
+  const dispatch = useDispatch();
 
   const list = useMemo(
     () => [
@@ -99,6 +100,12 @@ const SideList = ({ open, setOpen }) => {
           <AddCandidates {...{ setSelectedLink, link: "addcandidate" }} />
         ),
       },
+      {
+        title: "Generate Token",
+        icon: <PersonAddAlt1Icon />,
+        link: "generate",
+        component: <GenerateToken {...{ setSelectedLink, link: "generate" }} />,
+      },
     ],
     []
   );
@@ -106,8 +113,9 @@ const SideList = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // dispatch({ type: "UPDATE_USER", payload: null });
-    navigate("/");
+    localStorage.removeItem("user");
+    dispatch(reset);
+    window.location.reload();
   };
   return (
     <>
@@ -147,19 +155,17 @@ const SideList = ({ open, setOpen }) => {
         </List>
         <Divider />
         <Box sx={{ mx: "auto", mt: 3, mb: 1 }}>
-          <Tooltip title={currentUser?.name || ""}>
+          <Tooltip title={user?.name || ""}>
             <Avatar
-              src={currentUser?.photoURL}
+              src={user?.photoURL}
               {...(open && { sx: { width: 100, height: 100 } })}
             />
           </Tooltip>
         </Box>
         <Box sx={{ textAlign: "center" }}>
-          {open && <Typography>{currentUser?.name}</Typography>}
-          <Typography variant="body2">{currentUser?.role || "role"}</Typography>
-          {open && (
-            <Typography variant="body2">{currentUser?.email}</Typography>
-          )}
+          {open && <Typography>{user?.name}</Typography>}
+          <Typography variant="body2">{user?.role || "Elcom"}</Typography>
+          {open && <Typography variant="body2">{user?.email}</Typography>}
           <Tooltip title="Logout" sx={{ mt: 1 }}>
             <IconButton onClick={handleLogout}>
               <Logout />
