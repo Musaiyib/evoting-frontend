@@ -4,20 +4,20 @@ import {
   FormGroup,
   Input,
   Stack,
+  Container,
   TextField,
   Typography,
 } from "@mui/material";
-import { Container } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createCandidate } from "../../Slices/candidateSlice";
+import { createCandidate, deleteCandidate } from "../../Slices/candidateSlice";
 
 const AddCandidates = () => {
   const [name, setName] = useState();
   const [regNo, setRegNo] = useState();
   const [phone, setPhone] = useState();
   const [level, setLevel] = useState();
-  const [nickName, setNickName] = useState();
+  const [nickname, setNickname] = useState();
   const [image, setImage] = useState();
   const [position, setPosition] = useState();
   const [error, setError] = useState();
@@ -39,7 +39,7 @@ const AddCandidates = () => {
       setError("level field is required");
       return false;
     }
-    if (nickName === undefined || nickName === "" || nickName === null) {
+    if (nickname === undefined || nickname === "" || nickname === null) {
       setError("Nickname field is required");
       return false;
     }
@@ -63,10 +63,11 @@ const AddCandidates = () => {
         phone,
         position,
         regNo,
-        nickName,
+        nickname,
       })
     );
   };
+
   return (
     <Container
       className="votingpage"
@@ -114,17 +115,32 @@ const AddCandidates = () => {
           />
         </FormGroup>
         <FormGroup>
-          <TextField
+          <select
             onChange={(e) => setLevel(e.target.value)}
-            sx={{ my: 1 }}
             label="Candidate Level"
             type="number"
             required
-          />
+            style={{
+              height: 50,
+              background: "none",
+              color: "#c0c0c0",
+              // fontWeight: "500",
+              fontSize: 15,
+              paddingLeft: 10,
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: "#878787",
+            }}>
+            <option value={null}>--Select Level--</option>
+            <option value={400}>400</option>
+            <option value={300}>300</option>
+            <option value={200}>200</option>
+            <option value={100}>100</option>
+          </select>
         </FormGroup>
         <FormGroup>
           <TextField
-            onChange={(e) => setNickName(e.target.value)}
+            onChange={(e) => setNickname(e.target.value)}
             sx={{ my: 1 }}
             label="Candidate Nickname"
             required
@@ -192,7 +208,9 @@ const AddCandidates = () => {
             <option value="business">Director Business</option>
             <option value="business2">Asst Business</option>
           </select>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button sx={{ mt: 2 }} onClick={handleSubmit}>
+            Submit
+          </Button>
         </FormGroup>
       </FormControl>
     </Container>

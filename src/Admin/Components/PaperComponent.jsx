@@ -13,8 +13,15 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
 import logo from "../../image/nacos.png";
+import { useDispatch } from "react-redux";
+import { deleteCandidate } from "../../Slices/candidateSlice";
 
-const PaperComponent = ({ voteBtn, candidate }) => {
+const PaperComponent = ({ voteBtn, candidate, openModal }) => {
+  const dispatch = useDispatch();
+
+  const handleDelete = (id) => {
+    dispatch(deleteCandidate(id));
+  };
   return (
     <Paper
       elevation={7}
@@ -88,14 +95,16 @@ const PaperComponent = ({ voteBtn, candidate }) => {
               sx={{ textAlign: "center", width: "100%" }}
               size="small"
               color="primary"
-              startIcon={<EditIcon />}>
+              startIcon={<EditIcon />}
+              onClick={openModal}>
               <Typography fontSize={14}>Edit</Typography>
             </Button>
             <Button
               sx={{ textAlign: "center", width: "100%" }}
               size="small"
               color="error"
-              startIcon={<DeleteForeverIcon />}>
+              startIcon={<DeleteForeverIcon />}
+              onClick={() => handleDelete(candidate._id)}>
               <Typography fontSize={14}>Delete</Typography>
             </Button>
           </CardActions>
