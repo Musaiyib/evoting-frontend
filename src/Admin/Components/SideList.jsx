@@ -1,5 +1,6 @@
 import { ChevronLeft, Dashboard, Logout, PeopleAlt } from "@mui/icons-material";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import TokenIcon from "@mui/icons-material/Token";
 import {
   Avatar,
   Box,
@@ -74,7 +75,6 @@ const Drawer = styled(MuiDrawer, {
 
 const SideList = ({ open, setOpen }) => {
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
   const [selectedLink, setSelectedLink] = useState("");
   const dispatch = useDispatch();
 
@@ -102,7 +102,7 @@ const SideList = ({ open, setOpen }) => {
       },
       {
         title: "Generate Token",
-        icon: <PersonAddAlt1Icon />,
+        icon: <TokenIcon />,
         link: "generate",
         component: <GenerateToken {...{ setSelectedLink, link: "generate" }} />,
       },

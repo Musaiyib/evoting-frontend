@@ -1,14 +1,28 @@
 import { API } from '../api'
 
 // Create new payment
-const createPayment = async (paymentData, token) => {
+const generateVoteToken = async (voterData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    console.log(voterData);
+
+    const response = await API.post(`/vote/new/voter`, voterData, config)
+
+    return response.data
+}
+
+// Create new payment
+const createPayment = async (voterData, token) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     }
 
-    const response = await API.post(`/payments`, paymentData, config)
+    const response = await API.post(`/payments`, voterData, config)
 
     return response.data
 }
@@ -50,6 +64,7 @@ const deletePayment = async (paymentId, token) => {
 }
 
 const paymentService = {
+    generateVoteToken,
     createPayment,
     getPayments,
     updatePayment,
