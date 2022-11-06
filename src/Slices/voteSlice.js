@@ -5,12 +5,35 @@ import voteService from './voteService'
 
 const initialState = {
     voters: [],
+    voteToken: {},
     totalAmount: 0,
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: '',
 }
+
+// Create new voter
+export const generateVoteToken = createAsyncThunk(
+    'voteToken/create',
+    async (voterData, thunkAPI) => {
+
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            await thunkAPI.dispatch(getVoters())
+            const res = await voteService.generateVoteToken(voterData, token)
+            return res
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 
 // Create new voter
 export const createVoter = createAsyncThunk(
@@ -113,6 +136,20 @@ export const voterSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(generateVoteToken.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(generateVoteToken.fulfilled, (state, { payload }) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.voteToken = payload.data
+                state.message = payload.message
+            })
+            .addCase(generateVoteToken.rejected, (state, { payload }) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = payload
+            })
             .addCase(createVoter.pending, (state) => {
                 state.isLoading = true
             })
