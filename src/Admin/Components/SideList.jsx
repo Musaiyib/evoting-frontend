@@ -1,4 +1,4 @@
-import { ChevronLeft, Dashboard, Logout, PeopleAlt } from "@mui/icons-material";
+import { ChevronLeft, Dashboard, ListAltSharp, Logout, PeopleAlt } from "@mui/icons-material";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import TokenIcon from "@mui/icons-material/Token";
 import {
@@ -24,6 +24,7 @@ import AddCandidates from "./AddCandidates";
 import Candidates from "./Candidates";
 import GenerateToken from "./GenerateToken";
 import Main from "./Main";
+import GetToken from "./GetToken";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -87,7 +88,7 @@ const SideList = ({ open, setOpen }) => {
         component: <Main {...{ setSelectedLink, link: "" }} />,
       },
       {
-        title: "Users",
+        title: "Candidates",
         icon: <PeopleAlt />,
         link: "candidates",
         component: <Candidates {...{ setSelectedLink, link: "candidates" }} />,
@@ -105,6 +106,12 @@ const SideList = ({ open, setOpen }) => {
         icon: <TokenIcon />,
         link: "generate",
         component: <GenerateToken {...{ setSelectedLink, link: "generate" }} />,
+      },
+      {
+        title: "Get Token",
+        icon: <ListAltSharp />,
+        link: "get-token",
+        component: <GetToken {...{ setSelectedLink, link: "get-token" }} />,
       },
     ],
     []

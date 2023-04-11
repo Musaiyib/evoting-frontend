@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import FormInput from "../Components/FormInput";
 import "../sass/voterlogin.scss";
+import { logVoter } from "../Slices/voteSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const VoterLogin = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [values, setValues] = useState({
     regNo: "",
     token: "",
@@ -14,10 +19,7 @@ const VoterLogin = () => {
       name: "regNo",
       type: "text",
       placeholder: "Registration Number",
-      errorMessage:
-        "Username should be 3-16 characters and shouldn't include any special character!",
       label: "Registration Number",
-      pattern: "^[A-Za-z0-9]{3,16}$",
       required: true,
     },
     {
@@ -25,17 +27,21 @@ const VoterLogin = () => {
       name: "token",
       type: "text",
       placeholder: "Enter your token",
-      errorMessage:
-        "Username should be 3-16 characters and shouldn't include any special character!",
       label: "Token",
-      pattern: "^[A-Za-z0-9]{10}$",
       required: true,
     },
   ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  };
+    dispatch(logVoter({regNo: values.regNo, votePin: values.token}))
+      .then(() => {
+        navigate('/voting');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+};
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

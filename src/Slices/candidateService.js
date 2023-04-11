@@ -13,7 +13,7 @@ const createCandidate = async (candidateData, token) => {
     return response.data
 }
 
-// Get payments
+// Get candidates
 const getCandidates = async (token) => {
     const config = {
         headers: {
@@ -22,6 +22,18 @@ const getCandidates = async (token) => {
     }
 
     const response = await API.get(`/candidate/`, config)
+    return response.data
+}
+
+// Get roles
+const getRoles = async (token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+
+    const response = await API.get(`/roles/`, config)
     return response.data
 }
 
@@ -52,6 +64,7 @@ const deleteCandidate = async (candidateId, token) => {
 const candidateService = {
     createCandidate,
     getCandidates,
+    getRoles,
     updateCandidate,
     deleteCandidate,
 }

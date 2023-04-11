@@ -1,74 +1,64 @@
 import { API } from '../api'
 
-// Create new payment
+// Create new vote
 const generateVoteToken = async (voterData, token) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     }
-    console.log(voterData);
-
     const response = await API.post(`/vote/new/voter`, voterData, config)
-
     return response.data
 }
 
-// Create new payment
-const createPayment = async (voterData, token) => {
+// Create new vote
+const vote = async (voteData, token) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     }
-
-    const response = await API.post(`/payments`, voterData, config)
-
+    const response = await API.post(`/vote`, voteData, config)
     return response.data
 }
 
-// Get payments
-const getPayments = async (token) => {
+// Create new vote
+const getVoteToken = async (voterData, token) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     }
-
-    const response = await API.get(`/payments/`, config)
-    return response.data.payments
+    const response = await API.post(`/vote/get/voter`, voterData, config)
+    return response.data
 }
 
-// Update user
-const updatePayment = async (payment, token) => {
+// Create new vote
+const getAllVoteToken = async (token) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     }
-    const response = await API.put(`/payments/${payment.id}`, payment.data, config)
+    const response = await API.get(`/vote/get/all`, config)
     return response.data
 }
 
-// Delete user payment
-const deletePayment = async (paymentId, token) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+// Login voter
+const loginVoter = async (userData) => {
+    const response = await API.post(`/vote/login`, userData)
+    if (response.data) {
+        localStorage.setItem('voter', JSON.stringify(response.data))
     }
-
-    const response = await API.delete(`/payments/${paymentId}`, config)
-
     return response.data
 }
 
-const paymentService = {
+const voteService = {
     generateVoteToken,
-    createPayment,
-    getPayments,
-    updatePayment,
-    deletePayment,
+    vote,
+    loginVoter,
+    getVoteToken,
+    getAllVoteToken,
 }
 
-export default paymentService
+export default voteService

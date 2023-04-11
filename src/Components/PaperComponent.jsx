@@ -12,7 +12,10 @@ import {
 import React from "react";
 import logo from "../image/nacos.png";
 
-const PaperComponent = ({ voteBtn }) => {
+const PaperComponent = ({ candidate, voteBtn, handleCandidateSelect }) => {
+  const handleVoteClick = () => {
+    handleCandidateSelect(candidate);
+  };
   return (
     <Paper
       elevation={7}
@@ -52,8 +55,9 @@ const PaperComponent = ({ voteBtn }) => {
                 variant="h2"
                 color="green"
                 textTransform="capitalize"
-                component="div">
-                Musaiyib Yakubu Usman
+                component="div"
+              >
+                {candidate?.name}
               </Typography>
               <Typography
                 variant="h5"
@@ -61,7 +65,7 @@ const PaperComponent = ({ voteBtn }) => {
                 fontSize={12}
                 textTransform="capitalize"
                 component="div">
-                (Supplier)
+                {candidate?.nickname}
               </Typography>
               <Typography
                 fontSize={18}
@@ -70,8 +74,9 @@ const PaperComponent = ({ voteBtn }) => {
                 variant="h2"
                 mt={2}
                 textTransform="capitalize"
-                component="p">
-                Votes: 204
+                component="p"
+              >
+                {candidate?.votes}
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -81,12 +86,13 @@ const PaperComponent = ({ voteBtn }) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                // mt: -2,
               }}>
               <Button
                 sx={{ textAlign: "center", width: "100%" }}
                 size="small"
-                color="primary">
+                color="primary"
+                onClick={handleVoteClick}
+              >
                 <Typography>Vote</Typography>
               </Button>
             </CardActions>

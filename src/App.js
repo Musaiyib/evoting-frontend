@@ -10,13 +10,14 @@ import ContextApi from './ContextApi';
 import ProtectedRoutes from './Admin/Components/ProtectedRoutes';
 import ProtectVoting from './Components/ProtectVoting'
 import ElcomSignup from './Admin/Pages/Signup';
-
-const user = true
+import { useSelector } from 'react-redux';
 
 const App = () => {
-
+  
+  const { user } = useSelector(state => state.auth)
+  const { loginVoter } = useSelector(state => state.votes)
+  console.log(user, loginVoter);
   const [Values, SetValues] = React.useState([])
-
 
   return (
     <ContextApi.Provider value={{ Values, SetValues }}>

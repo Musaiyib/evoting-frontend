@@ -80,7 +80,7 @@ const PaperComponent = ({ voteBtn, candidate, openModal }) => {
                 mt={2}
                 textTransform="capitalize"
                 component="p">
-                Votes: 204
+                Votes: {candidate.votes}
               </Typography>
             </CardContent>
           </CardActionArea>

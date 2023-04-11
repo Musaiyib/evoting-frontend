@@ -2,9 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import moment from 'moment'
 import { toast } from 'react-toastify'
 import voteService from './voteService'
+import { useNavigate } from 'react-router-dom'
 
 const initialState = {
     voters: [],
+    voter: null,
+    loginVoter: {},
     voteToken: {},
     totalAmount: 0,
     isError: false,
@@ -13,7 +16,7 @@ const initialState = {
     message: '',
 }
 
-// Create new voter
+// Vote
 export const generateVoteToken = createAsyncThunk(
     'voteToken/create',
     async (voterData, thunkAPI) => {
@@ -28,6 +31,88 @@ export const generateVoteToken = createAsyncThunk(
                 (error.response &&
                     error.response.data &&
                     error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+// Create new voter
+export const vote = createAsyncThunk(
+    'vote/create',
+    async (voteData, thunkAPI) => {
+
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            await thunkAPI.dispatch(getVoters())
+            const res = await voteService.vote(voteData, token)
+            return res
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+// Get voter token
+export const getVoteToken = createAsyncThunk(
+    'voteToken/get',
+    async (voterData, thunkAPI) => {
+
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            const res = await voteService.getVoteToken(voterData, token)
+            return res
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+// Get voter token
+export const getAllVoteTokens = createAsyncThunk(
+    'votersToken/get',
+    async (_, thunkAPI) => {
+
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            await thunkAPI.dispatch(getVoters())
+            const res = await voteService.getAllVoteToken(token)
+            return res
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+//use vote token and regNo to sign voter
+export const logVoter = createAsyncThunk(
+    'login/voter',
+    async (voter, thunkAPI) => {
+        try {
+            const res = await voteService.loginVoter(voter)
+            return res
+        } catch (error) {
+            const message =
+                (error.response && error.response.data && error.response.data.message) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -215,6 +300,60 @@ export const voterSlice = createSlice({
                 state.isLoading = false
                 state.isError = true
                 state.message = payload
+            })
+            .addCase(logVoter.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(logVoter.fulfilled, (state, { payload }) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.loginVoter = payload
+            })
+            .addCase(logVoter.rejected, (state, { payload }) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = payload
+            })
+            .addCase(getVoteToken.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getVoteToken.fulfilled, (state, { payload }) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.voter = payload
+            })
+            .addCase(getVoteToken.rejected, (state, { payload }) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = payload
+            })
+            .addCase(getAllVoteTokens.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getAllVoteTokens.fulfilled, (state, { payload }) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.voters = payload.data
+                state.message = payload.msg
+            })
+            .addCase(getAllVoteTokens.rejected, (state, { payload }) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = payload.msg
+            })
+            .addCase(vote.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(vote.fulfilled, (state, { payload }) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.voters = payload.data
+                state.message = payload.msg
+            })
+            .addCase(vote.rejected, (state, { payload }) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = payload.msg
             })
     },
 })

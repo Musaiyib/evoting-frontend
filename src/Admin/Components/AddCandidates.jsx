@@ -8,9 +8,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createCandidate, deleteCandidate } from "../../Slices/candidateSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createCandidate, getRoles } from "../../Slices/candidateSlice";
 
 const AddCandidates = () => {
   const [name, setName] = useState();
@@ -24,6 +24,12 @@ const AddCandidates = () => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getRoles())
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
+  const { roles } = useSelector(state => state.candidates)
   const handleSubmit = (e) => {
     setError(null);
     e.preventDefault();
@@ -184,29 +190,12 @@ const AddCandidates = () => {
               borderColor: "#878787",
             }}
             required
-            onChange={(e) => setPosition(e.target.value)}>
+            onChange={(e) => setPosition(e.target.value)}
+          >
             <option value={null}>--Select Position--</option>
-            <option value="president">President</option>
-            <option value="vp1">Vice President 1</option>
-            <option value="vp2">Vice President 2</option>
-            <option value="secgen">Secretary General</option>
-            <option value="secgen2">Asst Secretary General</option>
-            <option value="finance">Director Finance</option>
-            <option value="finance2">Asst Finance</option>
-            <option value="Research">Director Research & Innovation</option>
-            <option value="media">Director Media & Publicity</option>
-            <option value="welfare">Director Welfare</option>
-            <option value="welfare2">Asst Welfare</option>
-            <option value="sport">Director Sport</option>
-            <option value="sport2">Asst Sport</option>
-            <option value="library">Director Library</option>
-            <option value="library2">Asst Library</option>
-            <option value="social">Director Social</option>
-            <option value="social2">Asst Social</option>
-            <option value="auditor">Director Auditor</option>
-            <option value="auditor2">Asst Auditor</option>
-            <option value="business">Director Business</option>
-            <option value="business2">Asst Business</option>
+            {roles.map((role) => (
+              <option key={role} value={role.toLowerCase()}>{role}</option>
+            ))}
           </select>
           <Button sx={{ mt: 2 }} onClick={handleSubmit}>
             Submit

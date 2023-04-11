@@ -5,6 +5,7 @@ import candidateService from './candidateService'
 
 const initialState = {
     candidates: [],
+    roles:[],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -43,6 +44,25 @@ export const getCandidates = createAsyncThunk(
         try {
             const token = thunkAPI.getState().auth.user.token
             return await candidateService.getCandidates(token)
+        } catch (error) {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+// Get roles
+export const getRoles = createAsyncThunk(
+    'roles/getAll',
+    async (_, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await candidateService.getRoles(token)
         } catch (error) {
             const message =
                 (error.response &&
@@ -131,14 +151,23 @@ export const candidateSlice = createSlice({
                 // let total = 0
                 state.isLoading = false
                 state.isSuccess = true
-                const formatDate = payload.map((candidate) => {
-                    candidate.createdAt = moment(candidate.createdAt).format('ll')
-                    candidate.updatedAt = moment(candidate.updatedAt).format('ll')
-                    return candidate;
-                })
-                state.candidates = formatDate
+                state.candidates = payload
             })
             .addCase(getCandidates.rejected, (state, { payload }) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = payload
+            })
+            .addCase(getRoles.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getRoles.fulfilled, (state, { payload }) => {
+                // let total = 0
+                state.isLoading = false
+                state.isSuccess = true
+                state.roles = payload
+            })
+            .addCase(getRoles.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = payload

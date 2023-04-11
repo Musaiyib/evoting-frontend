@@ -37,8 +37,6 @@ const GenerateToken = () => {
       setError("level field is required");
       return false;
     }
-
-    console.log(regNo, phone, level);
     dispatch(generateVoteToken({ regNo, phone, level }));
   };
   return (
@@ -74,7 +72,7 @@ const GenerateToken = () => {
           <TextField
             onChange={(e) => setRegNo(e.target.value)}
             sx={{ my: 1 }}
-            label="Candidate Registration Number"
+            label="Voter Registration Number"
             required
           />
         </FormGroup>
@@ -82,14 +80,14 @@ const GenerateToken = () => {
           <TextField
             onChange={(e) => setPhone(e.target.value)}
             sx={{ my: 1 }}
-            label="Candidate Phone Number"
+            label="Voter Phone Number"
             required
           />
         </FormGroup>
         <FormGroup>
           <select
             onChange={(e) => setLevel(e.target.value)}
-            label="Candidate Level"
+            label="Voter Level"
             type="number"
             required
             style={{

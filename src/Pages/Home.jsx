@@ -1,10 +1,18 @@
 import { Container, Divider, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import PaperComponent from "../Components/PaperComponent";
 import "../sass/home.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { getCandidates } from "../Slices/candidateSlice";
 // import aukpic from "../image/auk.jpg";
 
 const Home = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getCandidates());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const { candidates } = useSelector((state) => state.candidates);
   return (
     <Container
       className="home"
@@ -15,6 +23,7 @@ const Home = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        paddingBottom: 10
       }}>
       <div className="header"></div>
       <div className="welcome">
@@ -28,74 +37,35 @@ const Home = () => {
         <p className="totalExpected">3000</p>
         <div className="overlay"></div>
       </div>
-      <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
-        Presidents
-      </Divider>
-      <Grid
-        container
-        sx={{
-          margin: 0,
-          padding: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 4,
-        }}>
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-      </Grid>
-      <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
-        Vice Presidents I
-      </Divider>
-      <Grid
-        container
-        sx={{
-          margin: 0,
-          padding: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 4,
-        }}>
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-      </Grid>
-      <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
-        Vice Presidents II
-      </Divider>
-      <Grid
-        container
-        sx={{
-          margin: 0,
-          padding: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 4,
-        }}>
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-      </Grid>
-      <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
-        Secretary Generals
-      </Divider>
-      <Grid
-        container
-        sx={{
-          margin: 0,
-          padding: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 4,
-        }}>
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-        <PaperComponent voteBtn={false} />
-      </Grid>
+      {Object.keys(candidates).map((role) => (
+        <React.Fragment key={role}>
+          <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
+            {role}
+          </Divider>
+          {candidates[role].length === 0 ? (
+            <Typography variant="subtitle2" color="red">No candidates for this role: {role}.</Typography>
+          ) : (
+            <Grid
+              container
+              sx={{
+                margin: 0,
+                padding: 0,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 4,
+              }}>
+              {candidates[role].map((candidate) => (
+                <PaperComponent
+                  key={candidate._id}
+                  candidate={candidate}
+                  voteBtn={false}
+                />
+              ))}
+            </Grid>
+          )}
+        </React.Fragment>
+      ))}
     </Container>
   );
 };
