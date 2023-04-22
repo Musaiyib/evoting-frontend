@@ -10,8 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "@mui/material/Modal";
-import { updateCandidate } from "../../Slices/candidateSlice";
-import { getRoles } from "@testing-library/react";
+import { getRoles, updateCandidate } from "../../Slices/candidateSlice";
 
 const EditModal = ({ open, close, candidate }) => {
   const [name, setName] = useState(candidate?.name);

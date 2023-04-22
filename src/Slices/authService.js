@@ -17,7 +17,7 @@ const registerUser = async (userData) => {
 const loginUser = async (userData) => {
     const response = await API.post(`/users/`, userData)
     if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data))
+        localStorage.setItem('user', JSON.stringify(response.data.data))
     }
 
     return response.data

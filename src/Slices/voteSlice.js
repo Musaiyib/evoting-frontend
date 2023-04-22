@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import moment from 'moment'
 import { toast } from 'react-toastify'
 import voteService from './voteService'
-import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const initialState = {
     voters: [],
-    voter: null,
     loginVoter: {},
     voteToken: {},
     totalAmount: 0,
@@ -30,7 +28,7 @@ export const generateVoteToken = createAsyncThunk(
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -42,17 +40,17 @@ export const generateVoteToken = createAsyncThunk(
 export const vote = createAsyncThunk(
     'vote/create',
     async (voteData, thunkAPI) => {
-
         try {
             const token = thunkAPI.getState().auth.user.token
             await thunkAPI.dispatch(getVoters())
             const res = await voteService.vote(voteData, token)
+            console.log(res);
             return res
         } catch (error) {
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -73,7 +71,7 @@ export const getVoteToken = createAsyncThunk(
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -95,7 +93,7 @@ export const getAllVoteTokens = createAsyncThunk(
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -112,7 +110,7 @@ export const logVoter = createAsyncThunk(
             return res
         } catch (error) {
             const message =
-                (error.response && error.response.data && error.response.data.message) ||
+                (error.response && error.response.data && error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -137,7 +135,7 @@ export const createVoter = createAsyncThunk(
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -151,14 +149,16 @@ export const getVoters = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.user.token
-            return await voteService.getVoters(token)
+            const res = await voteService.getAllVoteToken(token)
+            return res
         } catch (error) {
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
+            console.log(error);
             return thunkAPI.rejectWithValue(message)
         }
     }
@@ -170,17 +170,14 @@ export const updateVoter = createAsyncThunk(
     async (voterData, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.user.token
-            toast.success("Voter updated successfully", { autoClose: 5000 });
             const res = await voteService.updateVoter(voterData, token)
-            if (res)
-                toast.success("Voter updated successfully", { autoClose: 5000 });
             return res
         } catch (error) {
             toast.error("Failed to updated voter", { autoClose: 5000 });
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -205,7 +202,7 @@ export const deleteVoter = createAsyncThunk(
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -228,46 +225,63 @@ export const voterSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 state.voteToken = payload.data
-                state.message = payload.message
+                state.message = payload.msg
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(generateVoteToken.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = payload
+                console.log(payload);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
             .addCase(createVoter.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(createVoter.fulfilled, (state) => {
+            .addCase(createVoter.fulfilled, (state, {payload}) => {
                 state.isLoading = false
                 state.isSuccess = true
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(createVoter.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload
+                state.message = payload.msg
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload.msg
+                  })
             })
             .addCase(getVoters.pending, (state) => {
                 state.isLoading = true
             })
             .addCase(getVoters.fulfilled, (state, { payload }) => {
-                // let total = 0
-                state.totalAmount = payload.reduce((prev, voter) => {
-                    return prev + voter.amount
-                }, 0)
                 state.isLoading = false
                 state.isSuccess = true
-                const formatDate = payload.map((voter) => {
-                    voter.createdAt = moment(voter.createdAt).format('ll')
-                    voter.updatedAt = moment(voter.updatedAt).format('ll')
-                    return voter;
-                })
-                state.voters = formatDate
+                state.voters = payload.data
             })
             .addCase(getVoters.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload
+                state.message = payload.msg
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload.msg
+                  })
             })
             .addCase(updateVoter.pending, (state) => {
                 state.isLoading = true
@@ -278,12 +292,22 @@ export const voterSlice = createSlice({
                 state.voters = state.voters.filter(
                     (voter) => voter._id === payload.id ? voter = payload : voter
                 )
-                state.updated = payload
+                state.updated = payload.data
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(updateVoter.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload
+                state.message = payload.msg
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload.msg
+                  })
             })
             .addCase(deleteVoter.pending, (state) => {
                 state.isLoading = true
@@ -294,12 +318,22 @@ export const voterSlice = createSlice({
                 state.voters = state.voters.filter(
                     (voter) => voter._id !== payload.id
                 )
-                state.deleted = payload
+                state.deleted = payload.data
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(deleteVoter.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload
+                state.message = payload.msg
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload.msg
+                  })
             })
             .addCase(logVoter.pending, (state) => {
                 state.isLoading = true
@@ -307,12 +341,22 @@ export const voterSlice = createSlice({
             .addCase(logVoter.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.loginVoter = payload
+                state.loginVoter = payload.data
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(logVoter.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload
+                state.message = payload.msg
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload.msg
+                  })
             })
             .addCase(getVoteToken.pending, (state) => {
                 state.isLoading = true
@@ -320,12 +364,22 @@ export const voterSlice = createSlice({
             .addCase(getVoteToken.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.voter = payload
+                state.loginVoter = payload.data
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(getVoteToken.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload
+                state.message = payload.msg
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload.msg
+                  })
             })
             .addCase(getAllVoteTokens.pending, (state) => {
                 state.isLoading = true
@@ -340,6 +394,11 @@ export const voterSlice = createSlice({
                 state.isLoading = false
                 state.isError = true
                 state.message = payload.msg
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload.msg
+                  })
             })
             .addCase(vote.pending, (state) => {
                 state.isLoading = true
@@ -349,11 +408,21 @@ export const voterSlice = createSlice({
                 state.isSuccess = true
                 state.voters = payload.data
                 state.message = payload.msg
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(vote.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = payload.msg
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload.msg
+                  })
             })
     },
 })

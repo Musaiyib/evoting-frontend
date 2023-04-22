@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import moment from 'moment'
 import { toast } from 'react-toastify'
 import candidateService from './candidateService'
+import Swal from 'sweetalert2'
 
 const initialState = {
     candidates: [],
@@ -21,15 +21,13 @@ export const createCandidate = createAsyncThunk(
             const token = thunkAPI.getState().auth.user.token
             await thunkAPI.dispatch(getCandidates())
             const res = await candidateService.createCandidate(candidateData, token)
-            if (res)
-                toast.success("Candidate added successfully", { autoClose: 5000 });
             return res
         } catch (error) {
             toast.error("Failed to add candidate", { autoClose: 5000 });
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -48,7 +46,7 @@ export const getCandidates = createAsyncThunk(
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -62,12 +60,13 @@ export const getRoles = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.user.token
-            return await candidateService.getRoles(token)
+            const res = await candidateService.getRoles(token)
+            return res
         } catch (error) {
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -91,7 +90,7 @@ export const updateCandidate = createAsyncThunk(
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -116,7 +115,7 @@ export const deleteCandidate = createAsyncThunk(
             const message =
                 (error.response &&
                     error.response.data &&
-                    error.response.data.message) ||
+                    error.response.data.msg) ||
                 error.message ||
                 error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -135,14 +134,24 @@ export const candidateSlice = createSlice({
             .addCase(createCandidate.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(createCandidate.fulfilled, (state) => {
+            .addCase(createCandidate.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(createCandidate.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = payload
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
             .addCase(getCandidates.pending, (state) => {
                 state.isLoading = true
@@ -151,12 +160,17 @@ export const candidateSlice = createSlice({
                 // let total = 0
                 state.isLoading = false
                 state.isSuccess = true
-                state.candidates = payload
+                state.candidates = payload.data
             })
             .addCase(getCandidates.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = payload
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
             .addCase(getRoles.pending, (state) => {
                 state.isLoading = true
@@ -171,6 +185,11 @@ export const candidateSlice = createSlice({
                 state.isLoading = false
                 state.isError = true
                 state.message = payload
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
             .addCase(updateCandidate.pending, (state) => {
                 state.isLoading = true
@@ -182,11 +201,21 @@ export const candidateSlice = createSlice({
                     (candidate) => candidate._id === payload.id ? candidate = payload : candidate
                 )
                 state.updated = payload
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(updateCandidate.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = payload
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
             .addCase(deleteCandidate.pending, (state) => {
                 state.isLoading = true
@@ -198,11 +227,21 @@ export const candidateSlice = createSlice({
                     (candidate) => candidate._id !== payload.id
                 )
                 state.deleted = payload
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
             .addCase(deleteCandidate.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = payload
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
     },
 })

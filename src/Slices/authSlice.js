@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './authService'
+import Swal from 'sweetalert2'
 
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem('user'))
@@ -36,8 +37,10 @@ export const registerUser = createAsyncThunk(
 // Login user
 export const loginUser = createAsyncThunk('auth/loginUser', async (user, thunkAPI) => {
     try {
-        await authService.loginUser(user)
+        const res = await authService.loginUser(user)
         window.location = "/elcom/dashboard"
+        console.log(res);
+        return res
     } catch (error) {
         const message =
             (error.response && error.response.data && error.response.data.message) ||
@@ -120,80 +123,130 @@ export const authSlice = createSlice({
             .addCase(registerUser.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(registerUser.fulfilled, (state, action) => {
+            .addCase(registerUser.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                state.user = payload
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
-            .addCase(registerUser.rejected, (state, action) => {
+            .addCase(registerUser.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = action.payload
+                state.message = payload
                 state.user = null
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
 
             // Login
             .addCase(loginUser.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(loginUser.fulfilled, (state, action) => {
+            .addCase(loginUser.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                state.user = payload
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
-            .addCase(loginUser.rejected, (state, action) => {
+            .addCase(loginUser.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = action.payload
+                state.message = payload
                 state.user = null
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
 
             // Update
             .addCase(updateUser.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(updateUser.fulfilled, (state, action) => {
+            .addCase(updateUser.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                state.user = payload
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
-            .addCase(updateUser.rejected, (state, action) => {
+            .addCase(updateUser.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = action.payload
+                state.message = payload
                 state.user = null
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
 
             // Get All Users
             .addCase(getAllusers.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(getAllusers.fulfilled, (state, action) => {
+            .addCase(getAllusers.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.users = action.payload.users
+                state.users = payload.users
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
-            .addCase(getAllusers.rejected, (state, action) => {
+            .addCase(getAllusers.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = action.payload
+                state.message = payload
                 state.users = null
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
 
             // delete
             .addCase(deleteUser.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(deleteUser.fulfilled, (state, action) => {
+            .addCase(deleteUser.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                state.user = payload
+                Swal.fire({
+                    icon: 'success',
+                    title: 'success',
+                    text: payload.msg
+                  })
             })
-            .addCase(deleteUser.rejected, (state, action) => {
+            .addCase(deleteUser.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = action.payload
+                state.message = payload
                 state.user = null
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: payload
+                  })
             })
 
             // logout
