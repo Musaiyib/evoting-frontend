@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import FormInput from "../../Components/FormInput";
 import "../../sass/voterlogin.scss";
 import { loginUser } from "../../Slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const ElcomLogin = () => {
   const { isLoading } = useSelector((state) => state.auth);
+  const navigate = useNavigate()
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -31,9 +33,15 @@ const ElcomLogin = () => {
     },
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(values));
+    try {
+      dispatch(loginUser(values)).then((res) => {
+        navigate('/elcom/dashboard')
+      })
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const onChange = (e) => {

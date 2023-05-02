@@ -15,13 +15,7 @@ const createCandidate = async (candidateData, token) => {
 
 // Get candidates
 const getCandidates = async (token) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    }
-
-    const response = await API.get(`/candidate/`, config)
+    const response = await API.get(`/candidate/`)
     return response.data
 }
 

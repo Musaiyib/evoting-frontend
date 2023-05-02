@@ -34,9 +34,14 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export default function Dashboard() {
+  const user = localStorage.getItem('user')
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(true);
-
+  
+  const navigate = useNavigate();
+  if (!user) {
+    navigate('/elcom');
+  }
   const darkTheme = useMemo(
     () =>
       createTheme({
@@ -51,7 +56,6 @@ export default function Dashboard() {
     setOpen(true);
   };
 
-  const navigate = useNavigate();
   return (
     <ThemeProvider theme={darkTheme}>
       <Box sx={{ display: "flex" }}>

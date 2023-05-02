@@ -40,8 +40,7 @@ export const getCandidates = createAsyncThunk(
     'candidates/getAll',
     async (_, thunkAPI) => {
         try {
-            const token = thunkAPI.getState().auth.user.token
-            return await candidateService.getCandidates(token)
+            return await candidateService.getCandidates()
         } catch (error) {
             const message =
                 (error.response &&
@@ -78,15 +77,14 @@ export const getRoles = createAsyncThunk(
 export const updateCandidate = createAsyncThunk(
     'candidates/updateCandidate',
     async (candidateData, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+        console.log(token);
         try {
             const token = thunkAPI.getState().auth.user.token
-            toast.success("Candidate updated successfully", { autoClose: 5000 });
             const res = await candidateService.updateCandidate(candidateData, token)
-            if (res)
-                toast.success("Candidate updated successfully", { autoClose: 5000 });
+            await thunkAPI.dispatch(getCandidates())
             return res
         } catch (error) {
-            toast.error("Failed to updated candidate", { autoClose: 5000 });
             const message =
                 (error.response &&
                     error.response.data &&
@@ -103,15 +101,11 @@ export const deleteCandidate = createAsyncThunk(
     'candidates/deleteCandidate',
     async (id, thunkAPI) => {
         try {
-            toast.success("Candidate deleted successfully", { autoClose: 5000 });
             const token = thunkAPI.getState().auth.user.token
             const res = await candidateService.deleteCandidate(id, token)
-            if (res)
-                toast.success("Candidate deleted successfully", { autoClose: 5000 });
+            await thunkAPI.dispatch(getCandidates())
             return res
         } catch (error) {
-
-            toast.error("Failed to delete candidate", { autoClose: 5000 });
             const message =
                 (error.response &&
                     error.response.data &&
@@ -197,15 +191,12 @@ export const candidateSlice = createSlice({
             .addCase(updateCandidate.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.candidates = state.candidates.filter(
-                    (candidate) => candidate._id === payload.id ? candidate = payload : candidate
-                )
-                state.updated = payload
+                state.message = payload.msg
                 Swal.fire({
                     icon: 'success',
                     title: 'success',
                     text: payload.msg
-                  })
+                })
             })
             .addCase(updateCandidate.rejected, (state, { payload }) => {
                 state.isLoading = false
@@ -223,9 +214,6 @@ export const candidateSlice = createSlice({
             .addCase(deleteCandidate.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.candidates = state.candidates.filter(
-                    (candidate) => candidate._id !== payload.id
-                )
                 state.deleted = payload
                 Swal.fire({
                     icon: 'success',

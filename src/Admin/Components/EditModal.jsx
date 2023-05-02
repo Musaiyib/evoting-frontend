@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "@mui/material/Modal";
 import { getRoles, updateCandidate } from "../../Slices/candidateSlice";
 
-const EditModal = ({ open, close, candidate }) => {
+const EditModal = ({ open, setOpenModal, close, candidate }) => {
   const [name, setName] = useState(candidate?.name);
   const [regNo, setRegNo] = useState(candidate?.regNo);
   const [phone, setPhone] = useState(candidate?.phone);
@@ -71,7 +71,9 @@ const EditModal = ({ open, close, candidate }) => {
       nickname,
     };
 
-    dispatch(updateCandidate({ id: candidate._id, data }));
+    dispatch(updateCandidate({ id: candidate._id, data })).then(res => {
+      setOpenModal(false)
+    });
   };
   return (
     <div

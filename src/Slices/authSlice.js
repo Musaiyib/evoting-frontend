@@ -38,8 +38,6 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk('auth/loginUser', async (user, thunkAPI) => {
     try {
         const res = await authService.loginUser(user)
-        window.location = "/elcom/dashboard"
-        console.log(res);
         return res
     } catch (error) {
         const message =

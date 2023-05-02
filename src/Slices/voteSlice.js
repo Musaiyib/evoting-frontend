@@ -3,9 +3,10 @@ import { toast } from 'react-toastify'
 import voteService from './voteService'
 import Swal from 'sweetalert2'
 
+const loginVoter = JSON.parse(localStorage.getItem('voter'))
 const initialState = {
     voters: [],
-    loginVoter: {},
+    loginVoter: loginVoter ? loginVoter : null,
     voteToken: {},
     totalAmount: 0,
     isError: false,
@@ -41,9 +42,9 @@ export const vote = createAsyncThunk(
     'vote/create',
     async (voteData, thunkAPI) => {
         try {
-            const token = thunkAPI.getState().auth.user.token
+            // const token = thunkAPI.getState().auth.user.token
             await thunkAPI.dispatch(getVoters())
-            const res = await voteService.vote(voteData, token)
+            const res = await voteService.vote(voteData)
             console.log(res);
             return res
         } catch (error) {
@@ -105,19 +106,22 @@ export const getAllVoteTokens = createAsyncThunk(
 export const logVoter = createAsyncThunk(
     'login/voter',
     async (voter, thunkAPI) => {
-        try {
-            const res = await voteService.loginVoter(voter)
-            return res
-        } catch (error) {
-            const message =
-                (error.response && error.response.data && error.response.data.msg) ||
-                error.message ||
-                error.toString()
-            return thunkAPI.rejectWithValue(message)
-        }
+      try {
+          const res = await voteService.loginVoter(voter);
+          localStorage.setItem("voter", JSON.stringify(res.voter));
+        return res;
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.msg) ||
+          error.message ||
+          error.toString();
+        return thunkAPI.rejectWithValue(message);
+      }
     }
-)
-
+);
+  
 // Create new voter
 export const createVoter = createAsyncThunk(
     'voters/create',
@@ -341,7 +345,7 @@ export const voterSlice = createSlice({
             .addCase(logVoter.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.loginVoter = payload.data
+                state.loginVoter = payload.voter
                 Swal.fire({
                     icon: 'success',
                     title: 'success',
@@ -351,11 +355,12 @@ export const voterSlice = createSlice({
             .addCase(logVoter.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload.msg
+                console.log(payload);
+                state.message = payload
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: payload.msg
+                    text: payload
                   })
             })
             .addCase(getVoteToken.pending, (state) => {
@@ -417,11 +422,11 @@ export const voterSlice = createSlice({
             .addCase(vote.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload.msg
+                state.message = payload;
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: payload.msg
+                    text: payload
                   })
             })
     },

@@ -41,14 +41,14 @@ const Candidates = () => {
         </Typography>
       </div>
       {openModal && (
-        <EditModal open={openModal} close={handleModal} candidate={person} />
+        <EditModal open={openModal} setOpenModal={setOpenModal} close={handleModal} candidate={person} />
       )}
       {Object.keys(candidates).map((role) => (
         <React.Fragment key={role}>
           <Divider sx={{ marginY: 4 }} orientation="horizontal" flexItem>
             {role}
           </Divider>
-          {candidates[role].length === 0 ? (
+          {candidates && Array.isArray(candidates[role]) && candidates[role].length === 0 ? (
             <Typography variant="subtitle2" color="red">No candidates for this role: {role}.</Typography>
           ) : (
             <Grid
@@ -61,7 +61,7 @@ const Candidates = () => {
                 alignItems: "center",
                 gap: 4,
               }}>
-              {candidates[role].map((candidate) => (
+              {candidates && Array.isArray(candidates[role]) && candidates[role].map((candidate) => (
                 <PaperComponent
                   key={candidate._id}
                   candidate={candidate}
@@ -74,6 +74,7 @@ const Candidates = () => {
           )}
         </React.Fragment>
       ))}
+
       
     </Container>
   );

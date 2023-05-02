@@ -11,8 +11,12 @@ import {
 } from "@mui/material";
 import React from "react";
 import logo from "../image/nacos.png";
+import { useSelector } from "react-redux";
 
 const PaperComponent = ({ candidate, voteBtn, handleCandidateSelect }) => {
+
+  const { loginVoter } = useSelector(state => state.votes)
+  
   const handleVoteClick = () => {
     handleCandidateSelect(candidate);
   };
@@ -33,7 +37,7 @@ const PaperComponent = ({ candidate, voteBtn, handleCandidateSelect }) => {
           }}>
           <CardActionArea
             sx={{
-              height: !voteBtn ? 280 : 260,
+              height: !voteBtn ? 290 : 290,
             }}>
             <CardMedia
               component="img"
@@ -65,22 +69,25 @@ const PaperComponent = ({ candidate, voteBtn, handleCandidateSelect }) => {
                 fontSize={12}
                 textTransform="capitalize"
                 component="div">
-                {candidate?.nickname}
+                {`(${candidate?.nickname})`}
               </Typography>
               <Typography
                 fontSize={18}
                 color="green"
                 fontWeight="bolder"
                 variant="h2"
-                mt={2}
                 textTransform="capitalize"
                 component="p"
+                sx={{
+                  marginTop: 2,
+                }}
+
               >
                 {candidate?.votes}
               </Typography>
             </CardContent>
           </CardActionArea>
-          {voteBtn && (
+          {voteBtn && loginVoter?.voted !== true && (
             <CardActions
               sx={{
                 display: "flex",

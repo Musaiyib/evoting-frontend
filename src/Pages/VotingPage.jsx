@@ -5,6 +5,7 @@ import "../sass/votingpage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getCandidates } from "../Slices/candidateSlice";
 import { vote } from "../Slices/voteSlice";
+import { useNavigate } from "react-router-dom";
 
 const VotingPage = () => {
   const [selectedCandidates, setSelectedCandidates] = useState({
@@ -34,7 +35,13 @@ const VotingPage = () => {
   });
 
   const dispatch = useDispatch();
-  const {user} = useSelector(state => state.auth)
+  const navigate = useNavigate()
+  const { loginVoter } = useSelector(state => state.votes)
+  const { candidates } = useSelector((state) => state.candidates);
+
+  if (!loginVoter) {
+    navigate('/login')
+  }
   useEffect(() => {
     dispatch(getCandidates());
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,14 +64,13 @@ const VotingPage = () => {
 
   const handleVoteSubmit = () => {
     dispatch(vote({
-      regNo: user.regNo,
-      votePin: user.votePin,
+      regNo: loginVoter.regNo,
+      votePin: loginVoter.votePin,
       candidates: selectedCandidates
     }))
     console.log(selectedCandidates);
   } 
 
-  const { candidates } = useSelector((state) => state.candidates);
   return (
     <Container
       className="votingpage"

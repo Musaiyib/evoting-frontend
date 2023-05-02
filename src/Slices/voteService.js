@@ -13,12 +13,12 @@ const generateVoteToken = async (voterData, token) => {
 
 // Create new vote
 const vote = async (voteData, token) => {
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    }
-    const response = await API.post(`/vote`, voteData, config)
+    // const config = {
+    //     headers: {
+    //         Authorization: `Bearer ${token}`,
+    //     },
+    // }
+    const response = await API.post(`/vote`, voteData)
     return response.data
 }
 
@@ -46,12 +46,9 @@ const getAllVoteToken = async (token) => {
 
 // Login voter
 const loginVoter = async (userData) => {
-    const response = await API.post(`/vote/login`, userData)
-    if (response.data) {
-        localStorage.setItem('voter', JSON.stringify(response.data))
-    }
-    return response.data
-}
+    const response = await API.post(`/vote/login`, userData);
+    return response.data;
+  };
 
 const voteService = {
     generateVoteToken,
