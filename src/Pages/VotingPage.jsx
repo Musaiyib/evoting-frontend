@@ -47,6 +47,11 @@ const VotingPage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('voter')
+    navigate('/login')
+  }
+
   const handleCandidateSelect = (role, candidate) => {
     setSelectedCandidates((prevSelectedCandidates) => {
       const updatedCandidates = {
@@ -67,8 +72,10 @@ const VotingPage = () => {
       regNo: loginVoter.regNo,
       votePin: loginVoter.votePin,
       candidates: selectedCandidates
-    }))
-    console.log(selectedCandidates);
+    })).then(res => {
+      localStorage.removeItem('voter')
+      navigate('/')
+    })
   } 
 
   return (
@@ -83,9 +90,10 @@ const VotingPage = () => {
         flexDirection: "column",
       }}>
       <div className="welcome">
-        <Typography variant="p" fontSize={16} component="h5">
+        <Typography variant="p" fontSize={16} component="h5" style={{ textAlign: 'center' }}>
           <b>NOTE: </b>Vote wisely, you can only use your TOKEN once
         </Typography>
+        <button style={{ width: 80, height: 30, margin: 10, borderRadius: 10, border: 'none', fontWeight: 600, fontSize: 12, position: 'absolute', top: 0, bottom: 0, right: 0 }} onClick={handleLogout}>Logout</button>
       </div>
       {Object.keys(candidates).map((role) => (
         <React.Fragment key={role}>

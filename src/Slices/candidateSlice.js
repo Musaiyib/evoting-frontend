@@ -77,8 +77,6 @@ export const getRoles = createAsyncThunk(
 export const updateCandidate = createAsyncThunk(
     'candidates/updateCandidate',
     async (candidateData, thunkAPI) => {
-        const token = thunkAPI.getState().auth.user.token
-        console.log(token);
         try {
             const token = thunkAPI.getState().auth.user.token
             const res = await candidateService.updateCandidate(candidateData, token)

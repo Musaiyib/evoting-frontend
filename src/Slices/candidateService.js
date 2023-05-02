@@ -7,7 +7,6 @@ const createCandidate = async (candidateData, token) => {
             Authorization: `Bearer ${token}`,
         },
     }
-    console.log(candidateData);
     const response = await API.post(`/candidate/register`, candidateData, config)
 
     return response.data

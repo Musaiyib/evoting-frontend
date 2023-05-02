@@ -373,17 +373,17 @@ export const voterSlice = createSlice({
                 Swal.fire({
                     icon: 'success',
                     title: 'success',
-                    text: payload.msg
+                    text: `${payload.msg}, vote pin: ${payload.data.votePin}`
                   })
             })
             .addCase(getVoteToken.rejected, (state, { payload }) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = payload.msg
+                state.message = payload
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: payload.msg
+                    text: payload
                   })
             })
             .addCase(getAllVoteTokens.pending, (state) => {

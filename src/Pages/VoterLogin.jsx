@@ -3,7 +3,7 @@ import FormInput from "../Components/FormInput";
 import "../sass/voterlogin.scss";
 import { logVoter } from "../Slices/voteSlice";
 import { useDispatch } from "react-redux";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const VoterLogin = () => {
   const dispatch = useDispatch()

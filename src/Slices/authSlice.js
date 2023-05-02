@@ -150,7 +150,7 @@ export const authSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, { payload }) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = payload
+                state.user = payload.data
                 Swal.fire({
                     icon: 'success',
                     title: 'success',

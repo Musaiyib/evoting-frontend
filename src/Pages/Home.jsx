@@ -4,15 +4,20 @@ import PaperComponent from "../Components/PaperComponent";
 import "../sass/home.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getCandidates } from "../Slices/candidateSlice";
+import { useNavigate } from "react-router-dom";
 // import aukpic from "../image/auk.jpg";
 
 const Home = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   useEffect(() => {
     dispatch(getCandidates());
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { candidates } = useSelector((state) => state.candidates);
+  const handleNavigate = () => {
+    navigate("/login");
+  }
   return (
     <Container
       className="home"
@@ -33,8 +38,9 @@ const Home = () => {
         <Typography variant="p" fontSize={30} component="h5">
           E-Voting website
         </Typography>
-        <p className="totalVoted">1304</p>
-        <p className="totalExpected">3000</p>
+        <button style={{ zIndex: 2, width: 120, height: 50, borderRadius: 10, border: 'none', marginTop: 40 }} onClick={handleNavigate}>Click to Vote</button>
+        {/* <p className="totalVoted">1304</p>
+        <p className="totalExpected">3000</p> */}
         <div className="overlay"></div>
       </div>
       {Object.keys(candidates).map((role) => (
