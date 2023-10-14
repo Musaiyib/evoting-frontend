@@ -18,6 +18,9 @@ const Home = () => {
   const handleNavigate = () => {
     navigate("/login");
   }
+  const handleElcomNavigate = () => {
+    navigate("/elcom");
+  }
   return (
     <Container
       className="home"
@@ -39,6 +42,7 @@ const Home = () => {
           E-Voting website
         </Typography>
         <button style={{ zIndex: 2, width: 120, height: 50, borderRadius: 10, border: 'none', marginTop: 40 }} onClick={handleNavigate}>Click to Vote</button>
+        <button style={{ zIndex: 2, width: 120, height: 50, borderRadius: 10, border: 'none', marginTop: 40 }} onClick={handleElcomNavigate}>Click to Elcom Login</button>
         {/* <p className="totalVoted">1304</p>
         <p className="totalExpected">3000</p> */}
         <div className="overlay"></div>
